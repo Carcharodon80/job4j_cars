@@ -28,6 +28,8 @@ public class UserRepository {
             session.getTransaction().commit();
         } catch (ConstraintViolationException e) {
             session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
         return user;
     }
@@ -48,6 +50,8 @@ public class UserRepository {
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 
@@ -66,6 +70,8 @@ public class UserRepository {
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 
@@ -75,8 +81,17 @@ public class UserRepository {
      * @return список пользователей
      */
     public List<User> findAllOrderById() {
+        List<User> users = List.of();
         Session session = sf.openSession();
-        List<User> users = session.createQuery("FROM User ORDER BY id", User.class).list();
+        try {
+            session.beginTransaction();
+            users = session.createQuery("FROM User ORDER BY id", User.class).list();
+            session.beginTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
         return users;
     }
 
@@ -87,10 +102,18 @@ public class UserRepository {
      * @return пользователь
      */
     public Optional<User> findById(int userId) {
+        Optional<User> optionalUser = Optional.empty();
         Session session = sf.openSession();
-        Query<User> query = session.createQuery("FROM User AS u WHERE u.id = :uId", User.class);
-        query.setParameter("uId", userId);
-        Optional<User> optionalUser = query.uniqueResultOptional();
+        try {
+            session.beginTransaction();
+            Query<User> query = session.createQuery("FROM User AS u WHERE u.id = :uId", User.class);
+            query.setParameter("uId", userId);
+            optionalUser = query.uniqueResultOptional();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
         return optionalUser;
     }
 
@@ -101,10 +124,19 @@ public class UserRepository {
      * @return список пользователей
      */
     public List<User> findByLikeLogin(String key) {
+        List<User> users = List.of();
         Session session = sf.openSession();
-        Query<User> query = session.createQuery("from User as u where u.login like :uLogin", User.class);
-        query.setParameter("uLogin", "%" + key + "%");
-        List<User> users = query.list();
+        try {
+            session.beginTransaction();
+            Query<User> query = session.createQuery("from User as u where u.login like :uLogin", User.class);
+            query.setParameter("uLogin", "%" + key + "%");
+            users = query.list();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+
         return users;
     }
 
@@ -115,10 +147,18 @@ public class UserRepository {
      * @return пользователь
      */
     public Optional<User> findByLogin(String login) {
+        Optional<User> optionalUser = Optional.empty();
         Session session = sf.openSession();
-        Query<User> query = session.createQuery("from User as u where u.login = :uLogin", User.class);
-        query.setParameter("uLogin", login);
-        Optional<User> optionalUser = query.uniqueResultOptional();
+        try {
+            session.beginTransaction();
+            Query<User> query = session.createQuery("from User as u where u.login = :uLogin", User.class);
+            query.setParameter("uLogin", login);
+            optionalUser = query.uniqueResultOptional();
+        } catch (Exception e) {
+            session.beginTransaction().rollback();
+        } finally {
+            session.close();
+        }
         return optionalUser;
     }
 }
