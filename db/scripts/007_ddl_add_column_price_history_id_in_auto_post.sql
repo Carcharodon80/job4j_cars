@@ -1,0 +1,1 @@
+ALTER TABLE auto_post ADD price_history_id INT;

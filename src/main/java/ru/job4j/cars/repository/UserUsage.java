@@ -4,18 +4,34 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.User;
+
 
 public class UserUsage {
     public static void main(String[] args) {
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         try (SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory()) {
-            var userRepository = new UserRepository(new CrudRepository(sf));
+            var crudRepository = new CrudRepository(sf);
+            var userRepository = new UserRepository(crudRepository);
+
             var user = new User();
             user.setLogin("admin");
             user.setPassword("admin");
+            var postRepository = new PostRepository(crudRepository);
+            var post1 = new Post();
+            post1.setUser(user);
+            post1.setDescription("New post 1");
+            post1.setPrice(10000);
+            var post2 = new Post();
+            post2.setUser(user);
+            post2.setDescription("New post 2");
+            post2.setPrice(20000);
             userRepository.create(user);
-            System.out.println("All users:");
+            postRepository.create(post1);
+            postRepository.create(post2);
+
+            /**System.out.println("All users:");
             userRepository.findAllOrderById().forEach(System.out::println);
             System.out.println("Users with 'e':");
             userRepository.findByLikeLogin("e").forEach(System.out::println);
@@ -26,7 +42,9 @@ public class UserUsage {
             user.setPassword("password");
             userRepository.update(user);
             System.out.println("Updated user:");
-            userRepository.findById(user.getId()).ifPresent(System.out::println);
+            userRepository.findById(user.getId()).ifPresent(System.out::println);*/
+            postRepository.delete(post1.getId());
+            postRepository.delete(post2.getId());
             userRepository.delete(user.getId());
             System.out.println("All users after deleting:");
             userRepository.findAllOrderById().forEach(System.out::println);
@@ -35,3 +53,7 @@ public class UserUsage {
         }
     }
 }
+
+//todo доделать changePrice!!!!!!!!
+//todo проверить связь post -> history
+

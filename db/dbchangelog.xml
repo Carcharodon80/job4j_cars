@@ -12,4 +12,7 @@
     <include file="scripts/002_ddl_create_auto_post.sql" relativeToChangelogFile="true"/>
     <include file="scripts/003_insert_users.sql" relativeToChangelogFile="true"/>
     <include file="scripts/004_do_auto_user_login_unique.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/005_ddl_create_price_history_table.sql" relativeToChangelogFile="true" />
+    <include file="scripts/006_ddl_add_column_price_in_post.sql" relativeToChangelogFile="true" />
+    <include file="scripts/007_ddl_add_column_price_history_id_in_auto_post.sql" relativeToChangelogFile="true" />
 </databaseChangeLog>
