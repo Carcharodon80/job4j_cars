@@ -5,6 +5,7 @@ import ru.job4j.cars.model.Post;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class PostRepository {
@@ -15,15 +16,21 @@ public class PostRepository {
         return post;
     }
 
-    public void delete(int postId) {
-        crudRepository.run("delete from Post where id = :id", Map.of("id", postId));
+    public void delete(Post post) {
+        crudRepository.run("delete from Post where id = :id", Map.of("id", post.getId()));
     }
 
     public List<Post> findAllPosts() {
         return crudRepository.query("from Post order by id asc", Post.class);
     }
 
-    public void changePrice(int postId, long newPrice) {
+    public Post findPostById(int postId) {
+        return crudRepository.optional("from Post where id = :id", Post.class, Map.of("id", postId)).get();
+    }
+
+    public void changePrice(Post post, long newPrice) {
+        post = findPostById(post.getId());
+
 
     }
 }

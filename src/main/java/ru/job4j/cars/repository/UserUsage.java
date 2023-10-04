@@ -43,9 +43,9 @@ public class UserUsage {
             userRepository.update(user);
             System.out.println("Updated user:");
             userRepository.findById(user.getId()).ifPresent(System.out::println);*/
-            postRepository.delete(post1.getId());
-            postRepository.delete(post2.getId());
-            userRepository.delete(user.getId());
+            postRepository.delete(post1);
+            postRepository.delete(post2);
+            userRepository.delete(user);
             System.out.println("All users after deleting:");
             userRepository.findAllOrderById().forEach(System.out::println);
         } finally {
@@ -55,5 +55,6 @@ public class UserUsage {
 }
 
 //todo доделать changePrice!!!!!!
+//todo при создании и обновлении объявления добавить priceHistory, привязав эту priceHistory к post
 //todo проверить связь post -> history
 

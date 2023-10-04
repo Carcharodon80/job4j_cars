@@ -15,47 +15,25 @@ import java.util.Optional;
 public class UserRepository {
     private final CrudRepository crudRepository;
 
-    /**
-     * Сохранить в базе, если нет с таким логином (поле login в базе - помечено как уникальное)
-     * @param user - пользователь
-     * @return - пользователь с id
-     */
     public User create(User user) {
         crudRepository.run(session -> session.persist(user));
         return user;
     }
 
-    /**
-     * Обновить пользователя
-     * @param user - пользователь
-     */
     public void update(User user) {
         crudRepository.run(session -> session.merge(user));
     }
 
-    /**
-     * Удалить пользователя с указанным id
-     * @param userId - id пользователя
-     */
-    public void delete(int userId) {
+    public void delete(User user) {
         crudRepository.run(
-                "delete from User where id = :fId", Map.of("fId", userId)
+                "delete from User where id = :fId", Map.of("fId", user.getId())
         );
     }
 
-    /**
-     * Список пользователей, отсортированных по id
-     * @return список пользователей
-     */
     public List<User> findAllOrderById() {
         return crudRepository.query("from User order by id asc", User.class);
     }
 
-    /**
-     * Найти пользователя по id
-     * @param userId id пользователя
-     * @return пользователь
-     */
     public Optional<User> findById(int userId) {
         return crudRepository.optional(
                 "from User where id = :fId", User.class, Map.of("fId", userId)
@@ -73,11 +51,6 @@ public class UserRepository {
         );
     }
 
-    /**
-     * Найти пользователя по логину
-     * @param login логин
-     * @return пользователь
-     */
     public Optional<User> findByLogin(String login) {
         return crudRepository.optional(
                 "from User where login = :fLogin", User.class, Map.of("fLogin", login)
