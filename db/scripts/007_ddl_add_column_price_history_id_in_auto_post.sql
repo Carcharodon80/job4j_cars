@@ -1,1 +1,1 @@
-ALTER TABLE auto_post ADD price_history_id INT;
+ALTER TABLE price_history ADD price_history_id INT REFERENCES auto_post(id);

@@ -14,6 +14,7 @@ public class UserUsage {
         try (SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory()) {
             var crudRepository = new CrudRepository(sf);
             var userRepository = new UserRepository(crudRepository);
+            var priceHistoryRepository = new PriceHistoryRepository(crudRepository);
 
             var user = new User();
             user.setLogin("admin");
@@ -30,6 +31,9 @@ public class UserUsage {
             userRepository.create(user);
             postRepository.create(post1);
             postRepository.create(post2);
+            postRepository.changePrice(post1, 50000);
+            postRepository.changePrice(post1, 10000000);
+            postRepository.changePrice(post2, 10);
 
             /**System.out.println("All users:");
             userRepository.findAllOrderById().forEach(System.out::println);
@@ -54,7 +58,5 @@ public class UserUsage {
     }
 }
 
-//todo доделать changePrice!!!!!!
-//todo при создании и обновлении объявления добавить priceHistory, привязав эту priceHistory к post
-//todo проверить связь post -> history
+//todo разобраться с каскадным удалением
 

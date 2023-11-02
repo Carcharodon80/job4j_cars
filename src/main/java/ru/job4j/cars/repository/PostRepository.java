@@ -2,7 +2,9 @@ package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
 import ru.job4j.cars.model.Post;
+import ru.job4j.cars.model.PriceHistory;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -10,6 +12,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PostRepository {
     private final CrudRepository crudRepository;
+    //private final PriceHistoryRepository priceHistoryRepository;
 
     public Post create(Post post) {
         crudRepository.run(session -> session.persist(post));
@@ -30,7 +33,17 @@ public class PostRepository {
 
     public void changePrice(Post post, long newPrice) {
         post = findPostById(post.getId());
+        System.out.println(post);
+        PriceHistory priceHistory = new PriceHistory();
+        priceHistory.setBefore(post.getPrice());
+        priceHistory.setAfter(newPrice);
+        priceHistory.setCreated(LocalDateTime.now());
+        post.getPriceHistories().add(priceHistory);
+        post.setPrice(newPrice);
+        update(post);
+    }
 
-
+    public void update(Post post) {
+        crudRepository.run(session -> session.merge(post));
     }
 }

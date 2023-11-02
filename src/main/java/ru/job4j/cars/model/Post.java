@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import lombok.Data;
+import org.hibernate.engine.internal.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ public class Post {
     @JoinColumn(name = "auto_user_id")
     private User user;
     private long price;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "price_history_id")
     private List<PriceHistory> priceHistories = new ArrayList<>();
 }
