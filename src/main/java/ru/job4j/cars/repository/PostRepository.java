@@ -12,7 +12,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PostRepository {
     private final CrudRepository crudRepository;
-    //private final PriceHistoryRepository priceHistoryRepository;
 
     public Post create(Post post) {
         crudRepository.run(session -> session.persist(post));

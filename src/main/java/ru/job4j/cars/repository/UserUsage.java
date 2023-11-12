@@ -14,12 +14,12 @@ public class UserUsage {
         try (SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory()) {
             var crudRepository = new CrudRepository(sf);
             var userRepository = new UserRepository(crudRepository);
-            var priceHistoryRepository = new PriceHistoryRepository(crudRepository);
+            var postRepository = new PostRepository(crudRepository);
 
             var user = new User();
             user.setLogin("admin");
             user.setPassword("admin");
-            var postRepository = new PostRepository(crudRepository);
+
             var post1 = new Post();
             post1.setUser(user);
             post1.setDescription("New post 1");
@@ -33,11 +33,13 @@ public class UserUsage {
             postRepository.create(post2);
             postRepository.changePrice(post1, 50000);
             postRepository.changePrice(post1, 10000000);
-            postRepository.changePrice(post2, 10);
+            postRepository.changePrice(post2, 1000);
 
-            /**System.out.println("All users:");
+            System.out.println("All users:");
             userRepository.findAllOrderById().forEach(System.out::println);
-            System.out.println("Users with 'e':");
+            System.out.println("All posts:");
+            postRepository.findAllPosts().forEach(System.out::println);
+            /**System.out.println("Users with 'e':");
             userRepository.findByLikeLogin("e").forEach(System.out::println);
             System.out.println("User with id:");
             userRepository.findById(user.getId()).ifPresent(System.out::println);
@@ -58,5 +60,5 @@ public class UserUsage {
     }
 }
 
-//todo разобраться с каскадным удалением
+//todo разобраться с логгированием
 
