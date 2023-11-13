@@ -7,7 +7,6 @@ import ru.job4j.cars.model.PriceHistory;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @AllArgsConstructor
 public class PostRepository {
@@ -32,7 +31,6 @@ public class PostRepository {
 
     public void changePrice(Post post, long newPrice) {
         post = findPostById(post.getId());
-        System.out.println(post);
         PriceHistory priceHistory = new PriceHistory();
         priceHistory.setBefore(post.getPrice());
         priceHistory.setAfter(newPrice);
