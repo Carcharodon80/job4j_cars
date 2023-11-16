@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,7 +21,8 @@ public class Post {
     @JoinColumn(name = "auto_user_id")
     private User user;
     private long price;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "auto_post_id")
+    @ToString.Exclude
     private List<PriceHistory> priceHistories = new ArrayList<>();
 }

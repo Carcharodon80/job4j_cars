@@ -26,7 +26,8 @@ public class PostRepository {
     }
 
     public Post findPostById(int postId) {
-        return crudRepository.optional("from Post where id = :id", Post.class, Map.of("id", postId)).get();
+        return crudRepository.optional("from Post p left join fetch p.priceHistories where p.id = :id",
+                Post.class, Map.of("id", postId)).get();
     }
 
     public void changePrice(Post post, long newPrice) {
@@ -35,7 +36,9 @@ public class PostRepository {
         priceHistory.setBefore(post.getPrice());
         priceHistory.setAfter(newPrice);
         priceHistory.setCreated(LocalDateTime.now());
-        post.getPriceHistories().add(priceHistory);
+        List<PriceHistory> priceHistories = post.getPriceHistories();
+        priceHistories.add(priceHistory);
+        post.setPriceHistories(priceHistories);
         post.setPrice(newPrice);
         update(post);
     }
