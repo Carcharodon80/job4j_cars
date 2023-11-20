@@ -11,11 +11,15 @@ import java.time.LocalDateTime;
 public class PriceHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
+    @Column(name = "before")
     private long before;
 
+    @Column(name = "after")
     private long after;
 
-    private LocalDateTime created;
+    @Column(name = "created")
+    private LocalDateTime created = LocalDateTime.now();
 }

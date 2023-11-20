@@ -7,6 +7,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.User;
 
+import java.util.List;
+
 public class UserUsage {
     public static void main(String[] args) {
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
@@ -30,6 +32,10 @@ public class UserUsage {
             userRepository.create(user);
             postRepository.create(post1);
             postRepository.create(post2);
+
+            post1.setParticipates(List.of(user));
+            postRepository.update(post1);
+
             postRepository.changePrice(post1, 50000);
             postRepository.changePrice(post1, 10000000);
             postRepository.changePrice(post2, 1000);

@@ -15,4 +15,5 @@
     <include file="scripts/005_ddl_create_price_history_table.sql" relativeToChangelogFile="true" />
     <include file="scripts/006_ddl_add_column_price_in_post.sql" relativeToChangelogFile="true" />
     <include file="scripts/007_ddl_add_column_price_history_id_in_auto_post.sql" relativeToChangelogFile="true" />
+    <include file="scripts/008_ddl_create_participates_table.sql" relativeToChangelogFile="true" />
 </databaseChangeLog>
