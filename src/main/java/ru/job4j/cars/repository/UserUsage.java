@@ -4,52 +4,46 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import ru.job4j.cars.model.Post;
-import ru.job4j.cars.model.User;
+import ru.job4j.cars.model.*;
 
-import java.util.List;
+import java.util.Set;
 
 public class UserUsage {
     public static void main(String[] args) {
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         try (SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory()) {
-            var crudRepository = new CrudRepository(sf);
-            var userRepository = new UserRepository(crudRepository);
-            var postRepository = new PostRepository(crudRepository);
+            CrudRepository crudRepository = new CrudRepository(sf);
+            UserRepository userRepository = new UserRepository(crudRepository);
+            EngineRepository engineRepository = new EngineRepository(crudRepository);
+            CarRepository carRepository = new CarRepository(crudRepository);
+            OwnerRepository ownerRepository = new OwnerRepository(crudRepository);
 
-            var user = new User();
-            user.setLogin("admin");
-            user.setPassword("admin");
+            User user1 = new User();
+            Engine engine1 = new Engine();
+            engine1.setName("Engine1");
+            Owner owner1 = new Owner();
+            owner1.setName("owner1");
+            owner1.setUser(user1);
+            Car car1 = new Car();
+            car1.setName("Car1");
+            car1.setEngine(engine1);
+            car1.setOwners(Set.of(owner1));
+            car1.setOwner(owner1);
 
-            var post1 = new Post();
-            post1.setUser(user);
-            post1.setDescription("New post 1");
-            post1.setPrice(10000);
-            var post2 = new Post();
-            post2.setUser(user);
-            post2.setDescription("New post 2");
-            post2.setPrice(20000);
-            userRepository.create(user);
-            postRepository.create(post1);
-            postRepository.create(post2);
+            userRepository.create(user1);
+            engineRepository.create(engine1);
+            carRepository.create(car1);
 
-            post1.setParticipates(List.of(user));
-            postRepository.update(post1);
+            System.out.println(engineRepository.findAllEngines());
+            System.out.println(carRepository.findAllCars());
+            System.out.println(ownerRepository.findAllOwners());
 
-            postRepository.changePrice(post1, 50000);
-            postRepository.changePrice(post1, 10000000);
-            postRepository.changePrice(post2, 1000);
-
-            System.out.println("All users:");
-            userRepository.findAllOrderById().forEach(System.out::println);
-            System.out.println("All posts:");
-            postRepository.findAllPosts().forEach(System.out::println);
-
-            userRepository.delete(user);
-            System.out.println("All users after deleting:");
-            userRepository.findAllOrderById().forEach(System.out::println);
+            carRepository.deleteCar(car1);
+            engineRepository.deleteEngine(engine1);
+            ownerRepository.deleteOwner(owner1);
         } finally {
             StandardServiceRegistryBuilder.destroy(registry);
         }
     }
 }
+

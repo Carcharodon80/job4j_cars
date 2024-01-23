@@ -1,0 +1,1 @@
+alter table cars add owner_id int references owners(id);
