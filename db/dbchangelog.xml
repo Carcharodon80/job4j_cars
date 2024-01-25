@@ -23,4 +23,7 @@
     <include file="scripts/013_ddl_add_column_owner_in_cars.sql" relativeToChangelogFile="true"/>
     <include file="scripts/014_ddl_add_column_car_id_in_auto_post.sql" relativeToChangelogFile="true"/>
     <include file="scripts/015_ddl_add_columns_start_and_end_in_history_owner.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/016_ddl_delete_columns_start_and_end_in_history_owner.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/017_ddl_create_history_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/018_ddl_add_column_history_id_in_cars.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
