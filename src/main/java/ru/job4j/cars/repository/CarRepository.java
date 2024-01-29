@@ -20,7 +20,11 @@ public class CarRepository {
     }
 
     public List<Car> findAllCars() {
-        return crudRepository.query("from Car c left join fetch c.owners order by c.id asc", Car.class);
+        return crudRepository.query("from Car c "
+                + "left join fetch c.histories "
+                + "left join fetch c.owner o "
+                + "left join fetch o.histories "
+                + "order by c.id asc", Car.class);
     }
 
     public void deleteCar(Car car) {

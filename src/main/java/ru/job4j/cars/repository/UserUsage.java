@@ -6,7 +6,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.cars.model.*;
 
-import java.util.Set;
+import java.time.LocalDateTime;
 
 public class UserUsage {
     public static void main(String[] args) {
@@ -17,6 +17,7 @@ public class UserUsage {
             EngineRepository engineRepository = new EngineRepository(crudRepository);
             CarRepository carRepository = new CarRepository(crudRepository);
             OwnerRepository ownerRepository = new OwnerRepository(crudRepository);
+            PostRepository postRepository = new PostRepository(crudRepository);
 
             User user1 = new User();
             Engine engine1 = new Engine();
@@ -27,11 +28,16 @@ public class UserUsage {
             Car car1 = new Car();
             car1.setName("Car1");
             car1.setEngine(engine1);
-            car1.setOwners(Set.of(owner1));
             car1.setOwner(owner1);
+            History history = new History();
+            history.setCar(car1);
+            history.setOwner(owner1);
+            history.setStartAt(LocalDateTime.now());
+            history.setEndAt(LocalDateTime.now());
 
             userRepository.create(user1);
             engineRepository.create(engine1);
+            ownerRepository.create(owner1);
             carRepository.create(car1);
 
             System.out.println(engineRepository.findAllEngines());
@@ -41,6 +47,7 @@ public class UserUsage {
             carRepository.deleteCar(car1);
             engineRepository.deleteEngine(engine1);
             ownerRepository.deleteOwner(owner1);
+            userRepository.delete(user1);
         } finally {
             StandardServiceRegistryBuilder.destroy(registry);
         }

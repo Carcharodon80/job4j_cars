@@ -16,7 +16,7 @@ public class OwnerRepository {
     }
 
     public List<Owner> findAllOwners() {
-        return crudRepository.query("from Owner order by id asc", Owner.class);
+        return crudRepository.query("from Owner o left join fetch o.histories order by o.id asc", Owner.class);
     }
 
     public void deleteOwner(Owner owner) {
