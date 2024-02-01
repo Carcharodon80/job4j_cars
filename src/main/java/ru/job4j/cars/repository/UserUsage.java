@@ -6,7 +6,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.cars.model.*;
 
-import java.time.LocalDateTime;
+import java.util.Set;
 
 public class UserUsage {
     public static void main(String[] args) {
@@ -18,36 +18,27 @@ public class UserUsage {
             CarRepository carRepository = new CarRepository(crudRepository);
             OwnerRepository ownerRepository = new OwnerRepository(crudRepository);
             PostRepository postRepository = new PostRepository(crudRepository);
+            PhotoRepository photoRepository = new PhotoRepository(crudRepository);
 
-            User user1 = new User();
             Engine engine1 = new Engine();
             engine1.setName("Engine1");
-            Owner owner1 = new Owner();
-            owner1.setName("owner1");
-            owner1.setUser(user1);
             Car car1 = new Car();
             car1.setName("Car1");
             car1.setEngine(engine1);
-            car1.setOwner(owner1);
-            History history = new History();
-            history.setCar(car1);
-            history.setOwner(owner1);
-            history.setStartAt(LocalDateTime.now());
-            history.setEndAt(LocalDateTime.now());
+            Photo photo1 = new Photo();
+            photo1.setName("photo1");
+            Photo photo2 = new Photo();
+            photo2.setName("photo2");
+            Post post1 = new Post();
+            post1.setCar(car1);
+            post1.setPhotos(Set.of(photo1, photo2));
 
-            userRepository.create(user1);
-            engineRepository.create(engine1);
-            ownerRepository.create(owner1);
-            carRepository.create(car1);
+            postRepository.create(post1);
 
-            System.out.println(engineRepository.findAllEngines());
-            System.out.println(carRepository.findAllCars());
-            System.out.println(ownerRepository.findAllOwners());
+            System.out.println(postRepository.findPostsForLastDay());
+            System.out.println(postRepository.findPostsByCarName("Car1"));
+            System.out.println(postRepository.findPostsWithPhoto());
 
-            carRepository.deleteCar(car1);
-            engineRepository.deleteEngine(engine1);
-            ownerRepository.deleteOwner(owner1);
-            userRepository.delete(user1);
         } finally {
             StandardServiceRegistryBuilder.destroy(registry);
         }

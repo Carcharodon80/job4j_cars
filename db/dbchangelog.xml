@@ -23,4 +23,5 @@
     <include file="scripts/013_ddl_add_column_owner_in_cars.sql" relativeToChangelogFile="true"/>
     <include file="scripts/014_ddl_add_column_car_id_in_auto_post.sql" relativeToChangelogFile="true"/>
     <include file="scripts/015_ddl_add_columns_startat_and_endat_in_history_owner.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/016_ddl_create_photos_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

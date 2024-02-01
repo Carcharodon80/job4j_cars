@@ -1,12 +1,11 @@
 package ru.job4j.cars.model;
 
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -32,18 +31,20 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
-    @ToString.Exclude
-    private List<PriceHistory> priceHistories = new ArrayList<>();
+    private Set<PriceHistory> priceHistories = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "participates",
             joinColumns = {@JoinColumn(name = "post_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
-    @ToString.Exclude
-    private List<User> participates = new ArrayList<>();
+    private Set<User> participates = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
     private Car car;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "post_id")
+    private Set<Photo> photos = new HashSet<>();
 }
