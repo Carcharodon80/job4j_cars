@@ -86,8 +86,9 @@ public class PostRepository {
         return crudRepository.query("select distinct p from Post p "
                 + "left join fetch p.priceHistories "
                 + "left join fetch p.participates "
-                + "join fetch p.photos "
                 + "left join fetch p.car c "
-                + "left join fetch c.histories ", Post.class);
+                + "left join fetch c.histories "
+                + "left join fetch p.photos ph "
+                + "where ph is not null", Post.class);
     }
 }
