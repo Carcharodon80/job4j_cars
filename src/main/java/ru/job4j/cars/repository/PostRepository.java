@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class PostRepository {
@@ -83,12 +84,12 @@ public class PostRepository {
     }
 
     public List<Post> findPostsWithPhoto() {
-        return crudRepository.query("select distinct p from Post p "
+        List<Post> allPosts =  crudRepository.query("select distinct p from Post p "
                 + "left join fetch p.priceHistories "
                 + "left join fetch p.participates "
                 + "left join fetch p.car c "
                 + "left join fetch c.histories "
-                + "left join fetch p.photos ph "
-                + "where ph is not null", Post.class);
+                + "left join fetch p.photos ph", Post.class);
+        return allPosts.stream().filter(post -> post.getPhotos().size() > 0).collect(Collectors.toList());
     }
 }
