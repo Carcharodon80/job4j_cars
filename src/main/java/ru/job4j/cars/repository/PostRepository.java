@@ -84,12 +84,12 @@ public class PostRepository {
     }
 
     public List<Post> findPostsWithPhoto() {
-        List<Post> allPosts =  crudRepository.query("select distinct p from Post p "
+        return crudRepository.query("select distinct p from Post p "
                 + "left join fetch p.priceHistories "
                 + "left join fetch p.participates "
                 + "left join fetch p.car c "
                 + "left join fetch c.histories "
-                + "left join fetch p.photos ph", Post.class);
-        return allPosts.stream().filter(post -> post.getPhotos().size() > 0).collect(Collectors.toList());
+                + "left join fetch p.photos ph "
+                + "where size (ph) > 0", Post.class);
     }
 }

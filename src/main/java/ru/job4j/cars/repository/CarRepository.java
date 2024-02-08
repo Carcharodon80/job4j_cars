@@ -16,7 +16,11 @@ public class CarRepository {
     }
 
     public Car findCarById(int carId) {
-        return crudRepository.optional("from Car c where c.id = :id", Car.class, Map.of("id", carId)).get();
+        return crudRepository.optional("from Car c "
+                + "left join fetch c.histories "
+                + "left join fetch c.owner o "
+                + "left join fetch o.histories "
+                + "where c.id = :id", Car.class, Map.of("id", carId)).get();
     }
 
     public List<Car> findAllCars() {
