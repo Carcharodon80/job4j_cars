@@ -89,7 +89,7 @@ public class PostRepository {
                 + "left join fetch p.participates "
                 + "left join fetch p.car c "
                 + "left join fetch c.histories "
-                + "left join fetch p.photos ph "
+                + "left join fetch p.photos ph  "
                 + "where size (ph) > 0", Post.class);
     }
 }
