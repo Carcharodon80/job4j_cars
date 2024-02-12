@@ -1,1 +1,0 @@
-ALTER TABLE price_history ADD auto_post_id INT REFERENCES auto_post(id) on delete cascade;

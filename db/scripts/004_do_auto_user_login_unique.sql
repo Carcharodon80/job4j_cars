@@ -1,1 +1,0 @@
-ALTER TABLE auto_user ADD UNIQUE (login);
