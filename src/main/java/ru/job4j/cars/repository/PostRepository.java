@@ -20,7 +20,8 @@ public class PostRepository {
     }
 
     public void delete(Post post) {
-        crudRepository.run("delete from Post where id = :id", Map.of("id", post.getId()));
+        crudRepository.run("delete from Post where id = :id",
+                Map.of("id", post.getId()));
     }
 
     public List<Post> findAllPosts() {

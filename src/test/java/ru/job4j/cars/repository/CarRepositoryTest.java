@@ -1,12 +1,10 @@
 package ru.job4j.cars.repository;
 
-import org.checkerframework.checker.units.qual.C;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.Car;
@@ -84,6 +82,6 @@ class CarRepositoryTest {
         car.setEngine(new Engine());
         carRepository.create(car);
         carRepository.deleteCar(car);
-        assertEquals(carRepository.findAllCars(), List.of());
+        assertEquals(carRepository.findAllCars().size(), 0);
     }
 }
