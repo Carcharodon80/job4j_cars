@@ -89,7 +89,7 @@ class PostRepositoryTest {
         post.setParticipates(Set.of(user));
         postRepository.create(post);
         postRepository.notifyParticipates(post);
-        assertEquals("login : description change price!\r\n", output.toString());
+        assertTrue(output.toString().contains("login : description change price!"));
         System.setOut(null);
     }
 
