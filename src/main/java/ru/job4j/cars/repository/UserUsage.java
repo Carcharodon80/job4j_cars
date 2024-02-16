@@ -13,12 +13,7 @@ public class UserUsage {
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         try (SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory()) {
             CrudRepository crudRepository = new CrudRepository(sf);
-            UserRepository userRepository = new UserRepository(crudRepository);
-            EngineRepository engineRepository = new EngineRepository(crudRepository);
-            CarRepository carRepository = new CarRepository(crudRepository);
-            OwnerRepository ownerRepository = new OwnerRepository(crudRepository);
             PostRepository postRepository = new PostRepository(crudRepository);
-            PhotoRepository photoRepository = new PhotoRepository(crudRepository);
 
             Engine engine1 = new Engine();
             engine1.setName("Engine1");

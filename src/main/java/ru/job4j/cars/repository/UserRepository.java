@@ -5,7 +5,7 @@ import ru.job4j.cars.model.User;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @AllArgsConstructor
 public class UserRepository {
@@ -26,14 +26,14 @@ public class UserRepository {
         );
     }
 
-    public List<User> findAllOrderById() {
+    public List<User> findAllUsers() {
         return crudRepository.query("from User order by id asc", User.class);
     }
 
-    public Optional<User> findById(int userId) {
+    public User findById(int userId) {
         return crudRepository.optional(
                 "from User where id = :fId", User.class, Map.of("fId", userId)
-        );
+        ).orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -47,9 +47,9 @@ public class UserRepository {
         );
     }
 
-    public Optional<User> findByLogin(String login) {
+    public User findByLogin(String login) {
         return crudRepository.optional(
                 "from User where login = :fLogin", User.class, Map.of("fLogin", login)
-        );
+        ).orElseThrow(NoSuchElementException::new);
     }
 }

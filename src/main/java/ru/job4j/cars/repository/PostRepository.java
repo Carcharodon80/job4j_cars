@@ -8,6 +8,7 @@ import ru.job4j.cars.model.User;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -29,13 +30,12 @@ public class PostRepository {
     }
 
     public Post findPostById(int postId) {
-        return crudRepository.optional("from Post p left join fetch p.priceHistories where p.id = :id",
-                Post.class, Map.of("id", postId)).get();
-    }
-
-    public Post findPostWithParticipates(Post post) {
-        return crudRepository.optional("from Post p left join fetch p.participates where p.id = :id",
-                Post.class, Map.of("id", post.getId())).get();
+        return crudRepository.optional("select distinct p from Post p "
+                        + "left join fetch p.priceHistories "
+                        + "left join fetch p.participates "
+                        + "left join fetch p.photos "
+                        + "where p.id = :id",
+                Post.class, Map.of("id", postId)).orElseThrow(NoSuchElementException::new);
     }
 
     public void changePrice(Post post, long newPrice) {
@@ -56,7 +56,7 @@ public class PostRepository {
     }
 
     public void notifyParticipates(Post post) {
-        post = findPostWithParticipates(post);
+        post = findPostById(post.getId());
         for (User user : post.getParticipates()) {
             System.out.println(user.getLogin() + " : " + post.getDescription() + " change price!");
         }

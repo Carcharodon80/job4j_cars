@@ -20,9 +20,9 @@ public class Post {
     private String description;
 
     @Column(name = "created")
-    private LocalDateTime created = LocalDateTime.now();
+    private LocalDateTime created = LocalDateTime.now().withNano(0);
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_user_id")
     private User user;
 
